@@ -2,6 +2,27 @@ import { useState } from 'react'
 import Card from './packages/cards/card'
 import CardHeader from './packages/cards/cardHeader'
 
+/** @attribution https://stackoverflow.com/a/2450976/1465015 */
+function shuffle<T>(array: Array<T>) {
+    const shallowCopy = [...array]
+    let currentIndex = shallowCopy.length
+
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+        // Pick a remaining element...
+        let randomIndex = Math.floor(Math.random() * currentIndex)
+        currentIndex--
+
+        // And swap it with the current element.
+        ;[shallowCopy[currentIndex], shallowCopy[randomIndex]] = [
+            shallowCopy[randomIndex],
+            shallowCopy[currentIndex],
+        ]
+    }
+
+    return shallowCopy
+}
+
 /**
  * Lol for fun we're gonna say a declension is the type like 1st declension,
  * and declination is the actual specific way a specific noun like 'cyning'
@@ -142,6 +163,7 @@ class NounDeclined<const T extends string> {
     #declinations: DeclinationOfNoun<T>
     #caseGram: Case
     #number: GrammaticalNumber
+    #value: string
 
     constructor({
         declinations,
@@ -155,6 +177,14 @@ class NounDeclined<const T extends string> {
         this.#declinations = declinations
         this.#caseGram = caseGram
         this.#number = number
+        const potentialValue = declinations[caseGram][number]
+        if (typeof potentialValue === 'undefined') {
+            throw new Error(
+                `Number: ${number} is not defined this NounDeclined: ${this}`
+            )
+        } else {
+            this.#value = potentialValue.value
+        }
     }
 
     get declinations() {
@@ -165,6 +195,9 @@ class NounDeclined<const T extends string> {
     }
     get number() {
         return this.#number
+    }
+    get value() {
+        return this.#value
     }
 }
 
@@ -296,7 +329,7 @@ const CaseMessenger = () => {
         // },
     ]
 
-    const [selectedWordArr, setSelectedWordInfos] = useState<
+    const [selectedWordArr, setSelectedWordArr] = useState<
         (NounDeclined<string> | WordSimple<string>)[]
     >([])
     const [feedback, setFeedback] = useState('')
@@ -304,8 +337,10 @@ const CaseMessenger = () => {
     const handleWordSelection = (
         word: NounDeclined<string> | WordSimple<string>
     ) => {
-        setSelectedWordInfos([...selectedWordArr, word])
+        setSelectedWordArr([...selectedWordArr, word])
     }
+
+    console.log({ selectedWordArr })
 
     function isNounDeclined(
         possibleNounDeclined: any
@@ -336,7 +371,7 @@ const CaseMessenger = () => {
             setFeedback('Correct! The case endings match the sentence meaning.')
             setTimeout(() => {
                 setCurrentLevel(currentLevel + 1)
-                setSelectedWordInfos([])
+                setSelectedWordArr([])
                 setFeedback('')
             }, 2000)
         } else {
@@ -365,54 +400,60 @@ const CaseMessenger = () => {
                     </div>
 
                     <div className="flex flex-wrap gap-2 my-4">
+                        {shuffle(
+                            scenarios[currentLevel].correctPattern.filter(
+                                (word) => word instanceof WordSimple
+                            )
+                        ).map((word) => (
+                            <button
+                                onClick={() => handleWordSelection(word)}
+                                className="px-3 py-1 bg-blue-100 rounded hover:bg-blue-200"
+                            >
+                                {word.value}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 my-4">
                         {scenarios[currentLevel].correctPattern.map((word) => {
                             if (isNounDeclined(word)) {
-                                console.log(word.declinations.declinationTable.dative.singular.value)
                                 return (
                                     <div
-                                        key={word.declinations.declinationTable.dative.singular.value}
+                                        key={word.declinations.base.value}
                                         className="space-y-2"
                                     >
                                         <h4 className="font-bold">
                                             {word.declinations.base.value}
                                         </h4>
                                         {Object.entries(
-                                            word.declinations
-                                        ).map(
-                                            ([caseGram, numberInfo]) =>
-                                                caseGram !== 'base' && (
-                                                    <div
-                                                        key={caseGram}
-                                                        className="space-x-2"
-                                                    >
-                                                        <button
-                                                            onClick={() =>
-                                                                handleWordSelection(
-                                                                    word
-                                                                )
-                                                            }
-                                                            className="px-3 py-1 bg-blue-100 rounded hover:bg-blue-200"
-                                                        >
-                                                            {
-                                                                word
-                                                                    .declinations[
-                                                                    caseGram
-                                                                ].singular
-                                                            }
-                                                        </button>
-                                                        <button
-                                                            onClick={() =>
-                                                                handleWordSelection(
-                                                                    word
-                                                                )
-                                                            }
-                                                            className="px-3 py-1 bg-blue-100 rounded hover:bg-blue-200"
-                                                        >
-                                                            {/* {forms.plural} */}
-                                                        </button>
-                                                    </div>
-                                                )
-                                        )}
+                                            word.declinations.declinationTable
+                                        ).map(([caseGram, numberInfo]) => (
+                                            <div
+                                                key={caseGram}
+                                                className="space-x-2"
+                                            >
+                                                <button
+                                                    onClick={() =>
+                                                        handleWordSelection(
+                                                            word
+                                                        )
+                                                    }
+                                                    className="px-3 py-1 bg-blue-100 rounded hover:bg-blue-200"
+                                                >
+                                                    {numberInfo?.singular.value}
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleWordSelection(
+                                                            word
+                                                        )
+                                                    }
+                                                    className="px-3 py-1 bg-blue-100 rounded hover:bg-blue-200"
+                                                >
+                                                    {numberInfo?.plural.value}
+                                                </button>
+                                            </div>
+                                        ))}
                                     </div>
                                 )
                             }
@@ -422,16 +463,14 @@ const CaseMessenger = () => {
                     <div className="bg-white p-4 rounded border">
                         <h3 className="font-bold mb-2">Your Sentence:</h3>
                         <div className="flex flex-wrap gap-2">
-                            {/* {selectedWordArr.map((word, index) => (
+                            {selectedWordArr.map((word, index) => (
                                 <span
                                     key={index}
                                     className="px-2 py-1 bg-gray-200 rounded"
                                 >
-                                    {vocabulary[word.word]?.[word.case]?.[
-                                        word.GrammaticalNumber
-                                    ] || word.word}
+                                    {word.value}
                                 </span>
-                            ))} */}
+                            ))}
                         </div>
                     </div>
 
