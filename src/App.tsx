@@ -282,7 +282,7 @@ interface Scenario {
 const SCENARIOS: Scenario[] = [
     {
         id: 1,
-        modernTranslation: 'The king greets the bishop',
+        modernTranslation: 'The king greets the bishop.',
         hint: 'Who is doing the action? (nominative) Who receives it? (accusative)',
         correctPattern: [
             new WordSimple('se'),
@@ -402,7 +402,7 @@ const CaseMessenger = () => {
         }
     }, [currentLevel])
     return (
-        <Card className="w-full max-w-4xl mx-auto">
+        <Card className="w-full max-w-4xl mx-auto parchment">
             <CardHeader>Old English Case Messenger</CardHeader>
 
             <div className="mb-6">
@@ -411,10 +411,10 @@ const CaseMessenger = () => {
             </div>
 
             {currentLevel < SCENARIOS.length && (
-                <div className="space-y-4">
+                <div className="space-y-4 font-serif">
                     <div className="bg-gray-100 p-4 rounded">
                         <h3 className="font-bold">Scenario:</h3>
-                        <p>{SCENARIOS[currentLevel].modernTranslation}</p>
+                        <p className='initial'>{SCENARIOS[currentLevel].modernTranslation}</p>
                         <p className="text-sm text-gray-600 mt-2">
                             Hint: {SCENARIOS[currentLevel].hint}
                         </p>
