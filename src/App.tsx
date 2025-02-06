@@ -402,7 +402,7 @@ const CaseMessenger = () => {
         }
     }, [currentLevel])
     return (
-        <Card className="w-full max-w-4xl mx-auto parchment">
+        <Card className="w-full max-w-4xl mx-auto parchment font-serif">
             <CardHeader>Old English Case Messenger</CardHeader>
 
             <div className="mb-6">
@@ -411,10 +411,12 @@ const CaseMessenger = () => {
             </div>
 
             {currentLevel < SCENARIOS.length && (
-                <div className="space-y-4 font-serif">
-                    <div className="bg-gray-100 p-4 rounded">
+                <div className="space-y-4">
+                    <div className="bg-gray-100/50 p-4 rounded">
                         <h3 className="font-bold">Scenario:</h3>
-                        <p className='initial'>{SCENARIOS[currentLevel].modernTranslation}</p>
+                        <p className="initial">
+                            {SCENARIOS[currentLevel].modernTranslation}
+                        </p>
                         <p className="text-sm text-gray-600 mt-2">
                             Hint: {SCENARIOS[currentLevel].hint}
                         </p>
@@ -424,7 +426,7 @@ const CaseMessenger = () => {
                         {shuffledWordSimples.map((word) => (
                             <button
                                 onClick={() => handleWordSelection(word)}
-                                className="px-3 py-1 bg-blue-100 rounded hover:bg-blue-200"
+                                className="px-3 py-1 bg-amber-100 rounded hover:bg-amber-200"
                             >
                                 {word.value}
                             </button>
@@ -468,7 +470,7 @@ const CaseMessenger = () => {
                                                                 )
                                                             )
                                                         }
-                                                        className="px-3 py-1 bg-blue-100 rounded hover:bg-blue-200"
+                                                        className="px-3 py-1 bg-amber-100 rounded hover:bg-amber-200"
                                                     >
                                                         {
                                                             numberInfo?.singular
@@ -489,7 +491,7 @@ const CaseMessenger = () => {
                                                                 )
                                                             )
                                                         }
-                                                        className="px-3 py-1 bg-blue-100 rounded hover:bg-blue-200"
+                                                        className="px-3 py-1 bg-amber-100 rounded hover:bg-amber-200"
                                                     >
                                                         {
                                                             numberInfo?.plural
@@ -504,14 +506,14 @@ const CaseMessenger = () => {
                         })}
                     </div>
 
-                    <div className="bg-white p-4 rounded border flex justify-between">
+                    <div className="bg-gray-100/50 p-4 rounded border flex justify-between">
                         <div>
                             <h3 className="font-bold mb-2">Your Sentence:</h3>
                             <div className="flex flex-wrap gap-2">
                                 {selectedWordArr.map((word, index) => (
                                     <button
                                         key={index}
-                                        className="px-2 py-1  rounded hover:bg-blue-200 flex-col relative"
+                                        className="px-2 py-1  rounded hover:bg-amber-200 flex-col relative"
                                         title={
                                             isNounDeclined(word)
                                                 ? word.caseGram
@@ -542,7 +544,7 @@ const CaseMessenger = () => {
 
                     <button
                         onClick={checkAnswer}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        className="px-4 py-2 bg-amber-500 text-white rounded hover:bg-amber-600"
                     >
                         Check Answer
                     </button>
