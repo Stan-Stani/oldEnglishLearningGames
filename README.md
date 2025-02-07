@@ -1,50 +1,23 @@
-# React + TypeScript + Vite
+# Ideas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+As you complete translations you gain coins. You can spend coins on items etc. to help you be better at your translations and info gathering.
 
-Currently, two official plugins are available:
+Gameplay loop.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Pick a mission
 
-## Expanding the ESLint configuration
+Mission part
+- knowledge / choice test (historical, situational, did you bring the right supplies for your choice?)
+- skill test (more traditional gameplay, platformer etc.)
+- translation / language task
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
+E.g. Mission: Gather info about the state of a neighboring village water supply. Is it similar looking to ours? Are their animals healthy?
+(Ours are sick. Find the cure.)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Luckily this first village is near the border with your homeland / a port city that's bound to have some people at least somewhat familiar with your tongue.
+(Vocabulary introduced.)
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Traditional game: Pluck sample feathers from each chicken without getting pecked to death
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Language: Record the sick / odd animals: blue cow, green pig etc.
