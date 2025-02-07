@@ -39,7 +39,6 @@ body {
 
 
 main {
-    postion: relative;
     width: 100%;
     height: auto;
 }
@@ -79,8 +78,6 @@ main p {
 .initial::first-letter {
     float: left;
     font: 3em/1em Morris;
-    /* a little relief for the first letter*/
-    text-shadow: 1px 1px 1px black;
     margin: 0 0.5rem;
 }
 
